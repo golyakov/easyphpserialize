@@ -19,14 +19,12 @@ import (
 type tokenKind byte
 
 const (
-	tokenUndef      tokenKind = iota // No token.
-	tokenDelim                       // Delimiter: one of '{', '}', '[' or ']'.
-	tokenString                      // A string literal, e.g. "abc\u1234"
-	tokenNumber                      // Number literal, e.g. 1.5e5
-	tokenBool                        // Boolean literal: true or false.
-	tokenType                        // Type 's', 'i', 'd', 'a', 'O'
-	tokenTypeLength                  // after :
-	tokenNull                        // null keyword.
+	tokenUndef  tokenKind = iota // No token.
+	tokenDelim                   // Delimiter: one of '{', '}', '[' or ']'.
+	tokenString                  // A string literal, e.g. "abc\u1234"
+	tokenNumber                  // Number literal, e.g. 1.5e5
+	tokenBool                    // Boolean literal: true or false.
+	tokenNull                    // null keyword.
 )
 
 // token describes a single token: type, position in the input and value.
@@ -545,6 +543,14 @@ func (r *Lexer) errInvalidToken(expected string) {
 
 func (r *Lexer) GetPos() int {
 	return r.pos
+}
+
+func (r *Lexer) KindIsString() bool {
+	return r.token.kind == tokenString
+}
+
+func (r *Lexer) KindIsNumber() bool {
+	return r.token.kind == tokenNumber
 }
 
 // Delim consumes a token and verifies that it is the given delimiter.
