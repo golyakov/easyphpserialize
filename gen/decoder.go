@@ -239,7 +239,7 @@ func (g *Generator) genTypeDecoderNoCheck(t reflect.Type, out string, tags field
 
 	case reflect.Map:
 		key := t.Key()
-		keyDec, ok := primitiveStringDecoders[key.Kind()]
+		keyDec, ok := primitiveDecoders[key.Kind()]
 		if !ok && !hasCustomUnmarshaler(key) {
 			return fmt.Errorf("map type %v not supported: only string and integer keys and types implementing easyphpserialize.Unmarshaler are allowed", key)
 		} // else assume the caller knows what they are doing and that the custom unmarshaler performs the translation from string or integer keys to the key type
