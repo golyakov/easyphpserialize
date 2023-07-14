@@ -622,7 +622,7 @@ func (r *Lexer) SkipRecursive() {
 		start, end = '{', '}'
 	case '[':
 		start, end = '[', ']'
-	case 'O':
+	case 'O', 'a':
 		isObject = true
 		r.SkipTo('{')
 		r.pos++
