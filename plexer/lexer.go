@@ -615,12 +615,18 @@ func (r *Lexer) SkipRecursive() {
 	r.scanToken()
 	var start, end byte
 	startPos := r.start
+	var isObject bool
 
 	switch r.token.delimValue {
 	case '{':
 		start, end = '{', '}'
 	case '[':
 		start, end = '[', ']'
+	case 'O':
+		isObject = true
+		r.SkipTo('{')
+		r.pos++
+		start, end = '{', '}'
 	default:
 		r.consume()
 		return
@@ -640,6 +646,9 @@ func (r *Lexer) SkipRecursive() {
 			level--
 			if level == 0 {
 				r.pos += i + 1
+				if isObject {
+					return
+				}
 				if !json.Valid(r.Data[startPos:r.pos]) {
 					r.pos = len(r.Data)
 					r.fatalError = &LexerError{
